@@ -1,0 +1,44 @@
+---
+title: "Untitled"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+library(here)
+library(flexdashboard)
+here::i_am('inst/rmd/flexFlashCard.Rmd')
+sfiles <- list.files(here('R'), pattern = '.R', recursive = TRUE)
+spaths <- file.path(here('R'), sfiles)
+sapply(spaths, source)
+rm(sfiles, spaths)
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+mod_load_deck_ui('load_deck')
+loaded_deck <- mod_load_deck_server('load_deck')
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+
+```
+
+### Chart C
+
+```{r}
+
+```
+

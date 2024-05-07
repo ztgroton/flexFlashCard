@@ -17,6 +17,6 @@ reactive data.frame
 }
 \examples{
 \dontrun{
- load_deck <- module_load_deck_server('load_deck')
+ load_deck <- mod_load_deck_server('load_deck')
 }
 }

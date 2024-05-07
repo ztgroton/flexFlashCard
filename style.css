@@ -1,0 +1,9 @@
+
+/*.chart-wrapper .chart-stage {
+  overflow: visible !important;
+}*/
+
+.chart-title {
+  font-weight: bold;
+  text-align: center;
+}

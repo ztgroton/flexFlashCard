@@ -17,6 +17,6 @@ shiny tags
 }
 \examples{
 \dontrun{
- module_load_deck_ui('load_deck')
+ mod_load_deck_ui('load_deck')
 }
 }

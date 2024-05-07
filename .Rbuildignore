@@ -3,3 +3,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
+
+^rsconnect/
+^flexFlashCard.Rmd
+^style.css

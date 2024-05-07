@@ -7,21 +7,31 @@
 #'
 #' @examples
 #' \dontrun{
-#'  module_load_deck_ui('load_deck')
+#'  mod_load_deck_ui('load_deck')
 #' }
 mod_load_deck_ui <- function(id) {
 
   ns <- NS(id)
 
-  div(
-    id = id,
-    tagList(
-      fileInput(
-        inputId = ns("file"),
-        label = "Upload Card Deck",
-        multiple = FALSE,
-        accept = c("excel", "excel", ".xls",".xlsx")
-      )
+  tagList(
+    actionButton(
+      inputId = ns("template"),
+      label = "Download File Template",
+      width = '100%'
+    ),
+    fileInput(
+      inputId = ns("file"),
+      label = NULL,
+      width = '100%',
+      multiple = FALSE,
+      accept = c("excel", "excel", ".xls",".xlsx"),
+      buttonLabel = "Browse",
+      placeholder = "Load from Excel File"
+    ),
+    selectizeInput(
+      inputId = ns("topic"), label = "Select Topic(s) to Review",
+      choices = '(no data loaded)', multiple = FALSE,
+      options = list(dropdownParent = 'body'), width = '100%'
     )
   )
 
@@ -38,7 +48,7 @@ mod_load_deck_ui <- function(id) {
 #'
 #' @examples
 #' \dontrun{
-#'  load_deck <- module_load_deck_server('load_deck')
+#'  load_deck <- mod_load_deck_server('load_deck')
 #' }
 mod_load_deck_server <- function(id) {
 
@@ -50,6 +60,27 @@ mod_load_deck_server <- function(id) {
     # reactive values ----
     deck_data <- reactiveVal(NULL)
 
+    # __________________ ----
+    # reactive expressions ----
+
+    # * topic_data ----
+    topic_data <- reactive({
+
+      req(deck_data())
+      req(input$topic)
+
+      if ("Select All" %in% input$topic){
+        deck_data()
+      } else {
+        ind <- deck_data()$Topic %in% input$topic
+        deck_data()[ind,,drop=F]
+      }
+
+    })
+
+    # * topic_cols ----
+    topic_cols <- reactive({topic_data()[, 1:2]})
+
     # ________ ----
     # observers ----
 
@@ -59,10 +90,7 @@ mod_load_deck_server <- function(id) {
       ext <- tools::file_ext(input$file$name)
 
       if (ext == "xls" || ext == 'xlsx'){
-
-        tmp <- readxl::read_excel(input$file$datapath)
-        deck_data(tmp)
-
+        deck_data(readxl::read_excel(input$file$datapath))
       } else {
         shinyWidgets::sendSweetAlert(
           session  = session, title = "Error - File Type",
@@ -70,8 +98,9 @@ mod_load_deck_server <- function(id) {
             tags$h4(
               HTML(
                 paste(
-                  "Hi", '<br>', "You have selected '", ext, "' file type.", '<br>',
-                  "Should only be xlsx or xls file"
+                  "Hi", '<br>',
+                  "You have selected '", ext, "' file type.",
+                  '<br>', "Should only be xlsx or xls file"
                 )
               ),
               style = "color: steelblue;"
@@ -83,9 +112,20 @@ mod_load_deck_server <- function(id) {
 
     })
 
+    # * deck_data() ----
+    observeEvent(deck_data(), {
+
+      updateSelectInput(
+        session = session, inputId = "topic",
+        choices = c(unique(deck_data()$Topic), "Select All"),
+        selected = 'Select All'
+      )
+
+    })
+
     # __________ ----
     # return value ----
-    reactive({deck_data()})
+    list(deck_data = reactive({deck_data()}), topic_data = reactive({topic_data()}))
 
   })
 
