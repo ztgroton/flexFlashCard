@@ -31,12 +31,12 @@ Interact with Flash Cards
 Column {data-width=300}
 -----------------------------------------------------------------------
 
-### Load Flash Cards from Excel File {data-height=250}
+### Load Flash Cards from Excel File {data-height=325}
 ```{r}
 mod_load_deck_ui('load_deck')
 ```
 
-### Browse Flash Cards in Selected Topics {data-height=750}
+### Browse Flash Cards in Selected Topics {data-height=675}
 
 ```{r}
 mod_browse_deck_ui('browse_deck')

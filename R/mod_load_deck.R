@@ -1,5 +1,7 @@
 #' 'Load Deck' Module - UI
 #'
+#' @importFrom utils read.csv write.csv
+#'
 #' @param id character - module id
 #'
 #' @return shiny tags
@@ -14,17 +16,17 @@ mod_load_deck_ui <- function(id) {
   ns <- NS(id)
 
   tagList(
-    actionButton(
-      inputId = ns("template"),
-      label = "Download File Template",
-      width = '100%'
+    downloadButton(
+      outputId = ns("template"),
+      label = "Download CSV Template",
+      style = "height: 25% !important;"
     ),
     fileInput(
       inputId = ns("file"),
       label = NULL,
       width = '100%',
       multiple = FALSE,
-      accept = c("excel", "excel", ".xls",".xlsx"),
+      accept = c(".csv", ".xls",".xlsx"),
       buttonLabel = "Browse",
       placeholder = "Load from Excel File"
     ),
@@ -91,6 +93,8 @@ mod_load_deck_server <- function(id) {
 
       if (ext == "xls" || ext == 'xlsx'){
         deck_data(readxl::read_excel(input$file$datapath))
+      } else if (ext == 'csv') {
+        deck_data(read.csv(input$file$datapath))
       } else {
         shinyWidgets::sendSweetAlert(
           session  = session, title = "Error - File Type",
@@ -122,6 +126,29 @@ mod_load_deck_server <- function(id) {
       )
 
     })
+
+    # ______ ----
+    # outputs ----
+
+    # * output$template ----
+    output$template <- downloadHandler(
+      filename = function() {
+        paste0("FlashCardTemplate.csv")
+      },
+      content = function(file) {
+
+        data <- data.frame(
+          Topic = character(),
+          Question = character(),
+          Definition = character(),
+          Examples = character(),
+          Comments = character()
+        )
+
+        write.csv(data, file, row.names = FALSE)
+
+      }
+    )
 
     # __________ ----
     # return value ----
