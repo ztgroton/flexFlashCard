@@ -13,7 +13,7 @@
 mod_show_card_ui <- function(id) {
   ns <- NS(id)
   tagList(
-    DT::dataTableOutput(ns('tbl'))
+    uiOutput(ns('card_ui'))
   )
 }
 
@@ -36,28 +36,53 @@ mod_show_card_server <- function(id, card) {
 
     ns <- session$ns
 
-    data <- reactive({card()})
+    # __________________ ----
+    # reactive expressions ----
+
+    # * card_html ----
+    card_html <- reactive({build_card_html(card())})
+
+    # _____________ ----
+    # inline functions ----
+
+    # * show_new_card ----
+    show_new_card <- function(data) {
+
+      output$card_ui <- renderUI({
+        flashCard::flashCardOutput(ns("card"), width = 450, height = 350)
+      })
+
+      output$card <- flashCard::renderFlashCard({
+        flashCard::flashCard(
+          data = data,
+          frontColor = "#090e87",
+          backColor = "#3443c9",
+          front_text_color = "white",
+          back_text_color = "white",
+          elementId = NULL
+        )
+      })
+
+    }
+
+    # ______ ----
+    # observers ----
+
+    # * card_html() ----
+    observeEvent(card_html(), {
+
+      print(card_html())
+
+      show_new_card(card_html())
+
+    })
 
     # ______ ----
     # outputs ----
 
-    # * output$tbl ----
-    output$tbl <- DT::renderDataTable({
-      req(data())
-      DT::datatable(
-        data = data(),
-        selection = list(mode = "single", target = 'row'),
-        rownames = TRUE,
-        #class ='cell-border stripe compact white-space: nowrap',
-        escape= FALSE,
-        editable = FALSE,
-        options = list(
-          dom = 'lftip',
-          scrollX = TRUE,
-          scrollY = '75vh'
-        ),
-        fillContainer = getOption("DT.fillContainer", TRUE)
-      )
+    # * output$card_ui ----
+    output$card_ui <- renderUI({
+      flashCard::flashCardOutput(ns("card"), width = 450,height = 350)
     })
 
   })
