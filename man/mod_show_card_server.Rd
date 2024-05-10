@@ -16,6 +16,6 @@ mod_show_card_server(id, card)
 }
 \examples{
 \dontrun{
- mod_show_card_server('show_card')
+ mod_show_card_server('show_card', card)
 }
 }

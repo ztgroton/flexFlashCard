@@ -26,7 +26,7 @@ mod_show_card_ui <- function(id) {
 #'
 #' @examples
 #' \dontrun{
-#'  mod_show_card_server('show_card')
+#'  mod_show_card_server('show_card', card)
 #' }
 mod_show_card_server <- function(id, card) {
 
@@ -55,8 +55,8 @@ mod_show_card_server <- function(id, card) {
       output$card <- flashCard::renderFlashCard({
         flashCard::flashCard(
           data = data,
-          frontColor = "#090e87",
-          backColor = "#3443c9",
+          frontColor = "#1a6ecc",
+          backColor = "#1a6ecc",
           front_text_color = "white",
           back_text_color = "white",
           elementId = NULL
@@ -71,18 +71,8 @@ mod_show_card_server <- function(id, card) {
     # * card_html() ----
     observeEvent(card_html(), {
 
-      print(card_html())
-
       show_new_card(card_html())
 
-    })
-
-    # ______ ----
-    # outputs ----
-
-    # * output$card_ui ----
-    output$card_ui <- renderUI({
-      flashCard::flashCardOutput(ns("card"), width = 450,height = 350)
     })
 
   })
