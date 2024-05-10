@@ -3,6 +3,8 @@
 export(build_card_html)
 export(mod_browse_deck_server)
 export(mod_browse_deck_ui)
+export(mod_card_tbl_server)
+export(mod_card_tbl_ui)
 export(mod_load_deck_server)
 export(mod_load_deck_ui)
 export(mod_show_card_server)

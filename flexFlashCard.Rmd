@@ -20,7 +20,9 @@ rm(sfiles, spaths)
 
 deck <- mod_load_deck_server('load_deck')
 card <- mod_browse_deck_server('browse_deck', deck$data$topic)
+
 mod_show_card_server('show_card', card$data)
+mod_card_tbl_server('card_tbl', card$data)
 ```
 
 Interact with Flash Cards
@@ -48,4 +50,3 @@ Column {data-width=700}
 ```{r}
 mod_show_card_ui('show_card')
 ```
-
