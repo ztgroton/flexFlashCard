@@ -246,6 +246,17 @@
       "Repository": "CRAN",
       "Hash": "f7736a18de97dea803bde0a2daaafb27"
     },
+    "flashCard": {
+      "Package": "flashCard",
+      "Version": "0.1.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "htmlwidgets",
+        "jsonlite"
+      ],
+      "Hash": "99ec44fbb8deac122d22c176342bc38a"
+    },
     "flexdashboard": {
       "Package": "flexdashboard",
       "Version": "0.6.2",
