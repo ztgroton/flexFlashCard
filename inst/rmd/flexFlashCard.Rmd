@@ -20,7 +20,9 @@ rm(sfiles, spaths)
 
 deck <- mod_load_deck_server('load_deck')
 card <- mod_browse_deck_server('browse_deck', deck$data$topic)
+
 mod_show_card_server('show_card', card$data)
+mod_card_tbl_server('card_tbl', card$data)
 ```
 
 Interact with Flash Cards
@@ -29,12 +31,12 @@ Interact with Flash Cards
 Column {data-width=300}
 -----------------------------------------------------------------------
 
-### Load Flash Cards from Excel File {data-height=250}
+### Load Flash Cards from Excel File {data-height=325}
 ```{r}
 mod_load_deck_ui('load_deck')
 ```
 
-### Browse Flash Cards in Selected Topics {data-height=750}
+### Browse Flash Cards in Selected Topics {data-height=675}
 
 ```{r}
 mod_browse_deck_ui('browse_deck')
@@ -48,4 +50,3 @@ Column {data-width=700}
 ```{r}
 mod_show_card_ui('show_card')
 ```
-
