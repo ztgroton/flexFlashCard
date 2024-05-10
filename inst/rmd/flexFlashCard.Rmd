@@ -1,44 +1,51 @@
 ---
-title: "Untitled"
+title: "Flash Card Dashboard"
 output: 
   flexdashboard::flex_dashboard:
     orientation: columns
-    vertical_layout: fill
+    vertical_layout: fill 
+    resize_reload: false
+    css: style.css
 runtime: shiny
 ---
 
 ```{r setup, include=FALSE}
 library(here)
 library(flexdashboard)
-here::i_am('inst/rmd/flexFlashCard.Rmd')
+here::i_am('flexFlashCard.Rmd')
 sfiles <- list.files(here('R'), pattern = '.R', recursive = TRUE)
 spaths <- file.path(here('R'), sfiles)
 sapply(spaths, source)
 rm(sfiles, spaths)
+
+deck <- mod_load_deck_server('load_deck')
+card <- mod_browse_deck_server('browse_deck', deck$data$topic)
+mod_show_card_server('show_card', card$data)
 ```
 
-Column {data-width=650}
+Interact with Flash Cards
+========================================================================
+
+Column {data-width=300}
 -----------------------------------------------------------------------
 
-### Chart A
-
+### Load Flash Cards from Excel File {data-height=250}
 ```{r}
 mod_load_deck_ui('load_deck')
-loaded_deck <- mod_load_deck_server('load_deck')
 ```
 
-Column {data-width=350}
+### Browse Flash Cards in Selected Topics {data-height=750}
+
+```{r}
+mod_browse_deck_ui('browse_deck')
+```
+
+Column {data-width=700}
 -----------------------------------------------------------------------
 
-### Chart B
+### Selected Flash Card
 
 ```{r}
-
-```
-
-### Chart C
-
-```{r}
-
+mod_show_card_ui('show_card')
 ```
 
