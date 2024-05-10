@@ -13,7 +13,7 @@
 mod_browse_deck_ui <- function(id) {
   ns <- NS(id)
   tagList(
-    DT::dataTableOutput(ns("card_tbl"))
+    DT::dataTableOutput(ns("tbl"))
   )
 }
 
@@ -45,11 +45,22 @@ mod_browse_deck_server <- function(id, topic) {
     # * topic_cols ----
     topic_cols <- reactive({topic()[, 1:2]})
 
+    # * last_clicked ----
+    last_clicked <- reactive({
+      req(input$tbl_row_last_clicked)
+      input$tbl_row_last_clicked
+    })
+
+    # * selected_card ----
+    selected_card <- reactive({
+      topic()[last_clicked(),,drop=F]
+    })
+
     # ______ ----
     # outputs ----
 
-    # * output$card_tbl ----
-    output$card_tbl <- DT::renderDataTable({
+    # * output$tbl ----
+    output$tbl <- DT::renderDataTable({
       DT::datatable(
         data = topic_cols(),
         selection = list(mode = "single", target = 'row'),
@@ -61,15 +72,15 @@ mod_browse_deck_server <- function(id, topic) {
           dom = 'lftip',
           scrollX = TRUE,
           scrollY = '75vh'
-        ),
-        fillContainer = getOption("DT.fillContainer", TRUE)
+        )#,
+        #fillContainer = getOption("DT.fillContainer", TRUE)
       )
     })
 
-  })
+    # __________ ----
+    # return value ----
+    list(data = reactive({selected_card()}))
 
-  # __________ ----
-  # return value ----
-  reactive({list()})
+  })
 
 }

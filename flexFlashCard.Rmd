@@ -17,6 +17,10 @@ sfiles <- list.files(here('R'), pattern = '.R', recursive = TRUE)
 spaths <- file.path(here('R'), sfiles)
 sapply(spaths, source)
 rm(sfiles, spaths)
+
+deck <- mod_load_deck_server('load_deck')
+card <- mod_browse_deck_server('browse_deck', deck$data$topic)
+mod_show_card_server('show_card', card$data)
 ```
 
 Interact with Flash Cards
@@ -25,17 +29,15 @@ Interact with Flash Cards
 Column {data-width=300}
 -----------------------------------------------------------------------
 
-### Load Flash Cards from Excel File {data-height=325}
+### Load Flash Cards from Excel File {data-height=250}
 ```{r}
 mod_load_deck_ui('load_deck')
-loaded_deck <- mod_load_deck_server('load_deck')
 ```
 
-### Browse Flash Cards in Selected Topics {data-height=675}
+### Browse Flash Cards in Selected Topics {data-height=750}
 
 ```{r}
 mod_browse_deck_ui('browse_deck')
-selected_card <- mod_browse_deck_server('browse_deck', loaded_deck$topic_data)
 ```
 
 Column {data-width=700}
@@ -44,6 +46,6 @@ Column {data-width=700}
 ### Selected Flash Card
 
 ```{r}
-
+mod_show_card_ui('show_card')
 ```
 

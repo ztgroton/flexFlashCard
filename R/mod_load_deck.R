@@ -125,7 +125,7 @@ mod_load_deck_server <- function(id) {
 
     # __________ ----
     # return value ----
-    list(deck_data = reactive({deck_data()}), topic_data = reactive({topic_data()}))
+    list(data = list(all = reactive({deck_data()}), topic = reactive({topic_data()})))
 
   })
 
